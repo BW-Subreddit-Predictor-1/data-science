@@ -14,8 +14,8 @@ class Subreddit(db.Model):
 class Thread(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String)
-    title_embedding = db.Column(db.PickleType)
-    body = db.Column(db.String)
-    body_embedding = db.Column(db.PickleType)
+    title_embedding = db.Column(db.PickleType, nullable=True)
+    body = db.Column(db.String, nullable=True)
+    body_embedding = db.Column(db.PickleType, nullable=True)
     upvotes = db.Column(db.Integer)
     subreddit = db.Column(db.Integer, db.ForeignKey('subreddit.id'))
