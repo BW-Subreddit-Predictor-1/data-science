@@ -34,7 +34,7 @@ def refresh_data():
             db_thread = Thread.query.get(submission.id) or Thread(id=submission.id)
             db_thread.title = submission.title
             db_thread.body = submission.selftext
-            db_thread.score = submission.score
+            db_thread.upvotes = submission.score
             db_thread.subreddit = Subreddit.query.filter_by(subreddit=each).first().id
             db.session.add(db_thread)
             
