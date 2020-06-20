@@ -6,6 +6,7 @@ import os
 
 from web_app.models import db, migrate
 from web_app.routes.refresh_route import refresh_route
+from web_app.routes.about_route import about route
 
 load_dotenv()
 DATABASE_URI = "sqlite:///bwpt_phsp1_ds.db"
@@ -18,6 +19,7 @@ def create_app():
     migrate.init_app(app, db)
 
     app.register_blueprint(refresh_route)
+    app.register_blueprint(about_route)
 
     return app
 
