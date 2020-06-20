@@ -9,7 +9,11 @@ from web_app.routes.refresh_route import refresh_route
 from web_app.routes.about_route import about_route
 
 load_dotenv()
+<<<<<<< HEAD
 DATABASE_URI = os.getenv('DATABASE_URL')
+=======
+DATABASE_URI = os.getenv(DATABASE_URL)
+>>>>>>> 5a00cf3e646cac76ef1e747becd657f72c6e9b97
 
 def create_app():
     app = Flask(__name__)
