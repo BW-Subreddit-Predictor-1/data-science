@@ -27,7 +27,7 @@ def refresh_data():
         user_agent=REDDIT_USER_AGENT)
 
     for each in subreddit_list:
-        submissions = reddit.subreddit(each).hot(limit=200)
+        submissions = reddit.subreddit(each).top(limit=1000)
         print(f'\n{each}')
         
         for submission in submissions:
