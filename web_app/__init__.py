@@ -7,6 +7,7 @@ import os
 from web_app.models import db, migrate
 from web_app.routes.refresh_route import refresh_route
 from web_app.routes.about_route import about_route
+from web_app.routes.predict_subreddit_route import predict_subreddit_route
 
 load_dotenv()
 DATABASE_URI = os.getenv('DATABASE_URL')
@@ -20,6 +21,7 @@ def create_app():
 
     app.register_blueprint(refresh_route)
     app.register_blueprint(about_route)
+    app.register_blueprint(predict_subreddit_route)
 
     return app
 
