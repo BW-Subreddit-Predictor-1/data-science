@@ -15,6 +15,7 @@ psycopg2-binary = "*"
 pycurl = "*"
 praw = "*"
 pandas = "*"
+sklearn = "*"
 
 [requires]
 python_version = "3.7"

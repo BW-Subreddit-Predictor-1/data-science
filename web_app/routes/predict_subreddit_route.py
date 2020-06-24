@@ -1,6 +1,8 @@
-from flask import Blueprint, request, Flask, Response, stream_with_context
+from flask import Blueprint, request, Flask, Response
 import pickle
 import json
+import os
+
 
 
 predict_subreddit_route = Blueprint('predict_subreddit_route', __name__)
@@ -11,20 +13,41 @@ vect = pickle.load(open('vect.pkl','rb'))
 
 @predict_subreddit_route.route('/predict_subreddit', methods=['POST'])
 def predict_subreddit():
+    '''a route that expects json object with 2 keys'''
 
-     """Gets data in JSON format and runs it through the model.
-       :return: JSON file.
-    """
-    data = request.get_json()
-    text = data['text']
-    features = {'text':text}
+    # receive input
+    lines = request.get_json(force=True)
 
-    # Converts the data into a DataFrame object.
-    predict_data = pd.DataFrame(features,index[1])
-    features_vectorizer = vect.transform(predict_data)
+    # get data from json
+    title_text = lines['title']
+    body_text = lines['body']
+    
+    # loading pickle files
+    encoder_path = os.path.join(os.path.dirname(__file__), '..', '..', 'NLP', 'encoder.pkl')
+    vect_path = os.path.join(os.path.dirname(__file__), '..', '..', 'NLP', 'vect.pkl')
+    model_path =os.path.join(os.path.dirname(__file__), '..', '..', 'NLP', 'RFC_model.pkl')
 
-    # Feeds the data into the model.
-    prediction = model.predict(features_vectorizer)
-    pred_class = encoder.inverse_transform(prediction)
+    encoder = pickle.load(open(encoder_path, 'rb'))
+    vect = pickle.load(open(vect_path, 'rb'))
+    model = pickle.load(open(model_path, 'rb'))
 
-    return jsonify({'prediction_class': pred_class})
+    # using the pickle files to make prediction
+    pred = model.predict(vect.transform([title_text]))
+    output = encoder.inverse_transform(pred)
+    print(output)
+
+    # using dictionary to format output for json
+    send_back = {'subreddit': output[0]}
+    send_back_placeholder = {'subreddit': 'placeholder'}
+    send_back_dummy = {'dummy': 1}
+    send_back_input = {
+        'title': title_text,
+        'body': body_text
+    }
+
+    # give output to sender
+    return Response(
+        response=json.dumps(send_back),
+        status=200,
+        mimetype='application/json'
+    )
