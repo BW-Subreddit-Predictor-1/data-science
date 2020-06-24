@@ -1,6 +1,8 @@
-from flask import Blueprint, request, Flask, Response, stream_with_context
+from flask import Blueprint, request, Flask, Response
 import pickle
 import json
+import os
+
 
 
 predict_subreddit_route = Blueprint('predict_subreddit_route', __name__)
@@ -15,16 +17,23 @@ def predict_subreddit():
     # get data from json
     title_text = lines['title']
     body_text = lines['body']
-    '''
-    # deserialize pretrained model
-    with open('model.pickle', 'rb') as mod:
-        model = pickle.load(mod)
+    
+    # loading pickle files
+    encoder_path = os.path.join(os.path.dirname(__file__), '..', '..', 'NLP', 'encoder.pkl')
+    vect_path = os.path.join(os.path.dirname(__file__), '..', '..', 'NLP', 'vect.pkl')
+    model_path =os.path.join(os.path.dirname(__file__), '..', '..', 'NLP', 'RFC_model.pkl')
 
-    # predict
-    output = model.predict([[title_text, body_text]])
-    '''
+    encoder = pickle.load(open(encoder_path, 'rb'))
+    vect = pickle.load(open(vect_path, 'rb'))
+    model = pickle.load(open(model_path, 'rb'))
+
+    # using the pickle files to make prediction
+    pred = model.predict(vect.transform([title_text]))
+    output = encoder.inverse_transform(pred)
+    print(output)
+
     # using dictionary to format output for json
-    # send_back = {'prediction': output}
+    send_back = {'subreddit': output[0]}
     send_back_placeholder = {'subreddit': 'placeholder'}
     send_back_dummy = {'dummy': 1}
     send_back_input = {
@@ -34,7 +43,7 @@ def predict_subreddit():
 
     # give output to sender
     return Response(
-        response=json.dumps(send_back_placeholder),
+        response=json.dumps(send_back),
         status=200,
         mimetype='application/json'
     )
