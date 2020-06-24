@@ -5,36 +5,26 @@ import json
 
 predict_subreddit_route = Blueprint('predict_subreddit_route', __name__)
 
+encoder = pickle.load(open('encoder.pkl','rb'))
+model = pickle.load(open('RFC_model.pkl','rb'))
+vect = pickle.load(open('vect.pkl','rb'))
+
 @predict_subreddit_route.route('/predict_subreddit', methods=['POST'])
 def predict_subreddit():
-    '''a route that expects json object with 2 keys'''
 
-    # receive input
-    lines = request.get_json(force=True)
+     """Gets data in JSON format and runs it through the model.
+       :return: JSON file.
+    """
+    data = request.get_json()
+    text = data['text']
+    features = {'text':text}
 
-    # get data from json
-    title_text = lines['title']
-    body_text = lines['body']
-    '''
-    # deserialize pretrained model
-    with open('model.pickle', 'rb') as mod:
-        model = pickle.load(mod)
+    # Converts the data into a DataFrame object.
+    predict_data = pd.DataFrame(features,index[1])
+    features_vectorizer = vect.transform(predict_data)
 
-    # predict
-    output = model.predict([[title_text, body_text]])
-    '''
-    # using dictionary to format output for json
-    # send_back = {'prediction': output}
-    send_back_placeholder = {'subreddit': 'placeholder'}
-    send_back_dummy = {'dummy': 1}
-    send_back_input = {
-        'title': title_text,
-        'body': body_text
-    }
+    # Feeds the data into the model.
+    prediction = model.predict(features_vectorizer)
+    pred_class = encoder.inverse_transform(prediction)
 
-    # give output to sender
-    return Response(
-        response=json.dumps(send_back_placeholder),
-        status=200,
-        mimetype='application/json'
-    )
+    return jsonify({'prediction_class': pred_class})
