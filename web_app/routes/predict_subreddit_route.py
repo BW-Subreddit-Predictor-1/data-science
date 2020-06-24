@@ -7,10 +7,6 @@ import os
 
 predict_subreddit_route = Blueprint('predict_subreddit_route', __name__)
 
-encoder = pickle.load(open('encoder.pkl','rb'))
-model = pickle.load(open('RFC_model.pkl','rb'))
-vect = pickle.load(open('vect.pkl','rb'))
-
 @predict_subreddit_route.route('/predict_subreddit', methods=['POST'])
 def predict_subreddit():
     '''a route that expects json object with 2 keys'''
