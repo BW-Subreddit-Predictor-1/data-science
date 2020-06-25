@@ -2,7 +2,7 @@ import requests
 import json
 
 
-#url = "http://localhost:5000/predict_subreddit" # if you want to test local
+url = "http://localhost:5000/predict_subreddit" # if you want to test local
 url = "https://bwptphsp1ds.herokuapp.com/predict_subreddit"  # if you want to test deployed 
 
 # this assumes that the agreed upon json keys are `title` and 'body' 
