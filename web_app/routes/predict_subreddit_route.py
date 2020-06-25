@@ -20,20 +20,20 @@ def predict_subreddit():
     
     # loading pickle files
     encoder_path = os.path.join(os.path.dirname(__file__), '..', '..', 'NLP', 'encoder.pkl')
-    vect_path = os.path.join(os.path.dirname(__file__), '..', '..', 'NLP', 'vect.pkl')
-    model_path =os.path.join(os.path.dirname(__file__), '..', '..', 'NLP', 'RFC_model.pkl')
+    model_path =os.path.join(os.path.dirname(__file__), '..', '..', 'model.pkl')
 
     encoder = pickle.load(open(encoder_path, 'rb'))
-    vect = pickle.load(open(vect_path, 'rb'))
     model = pickle.load(open(model_path, 'rb'))
 
     # using the pickle files to make prediction
-    pred = model.predict(vect.transform([title_text]))
+    pred = model.predict([title_text])
     output = encoder.inverse_transform(pred)
     print(output)
 
     # using dictionary to format output for json
     send_back = {'subreddit': output[0]}
+    
+    # can swap the variable in the response to one of these for testing
     send_back_placeholder = {'subreddit': 'placeholder'}
     send_back_dummy = {'dummy': 1}
     send_back_input = {
