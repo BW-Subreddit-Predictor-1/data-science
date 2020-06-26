@@ -19,14 +19,16 @@ def predict_subreddit():
     body_text = lines['body']
     
     # loading pickle files
-    encoder_path = os.path.join(os.path.dirname(__file__), '..', '..', 'NLP', 'encoder.pkl')
-    model_path =os.path.join(os.path.dirname(__file__), '..', '..', 'model.pkl')
+    encoder_path = os.path.join(os.path.dirname(__file__), '..', '..', 'pickle_files', 'encoder_small.pkl')
+    vect_path = os.path.join(os.path.dirname(__file__), '..', '..', 'pickle_files', 'vect_small.pkl')
+    model_path =os.path.join(os.path.dirname(__file__), '..', '..', 'pickle_files', 'RFC_model_small.pkl')
 
     encoder = pickle.load(open(encoder_path, 'rb'))
+    vect = pickle.load(open(vect_path, 'rb'))
     model = pickle.load(open(model_path, 'rb'))
 
     # using the pickle files to make prediction
-    pred = model.predict([title_text])
+    pred = model.predict(vect.transform([title_text]))
     output = encoder.inverse_transform(pred)
     print(output)
 
