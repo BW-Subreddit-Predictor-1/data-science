@@ -6,7 +6,7 @@ import json
 url = "https://bwptphsp1ds.herokuapp.com/predict_subreddit"  # if you want to test deployed 
 
 # this assumes that the agreed upon json keys are `title` and 'body' 
-val = {'title': 'i want to learn data science', 'body': 'b'} 
+val = {'title': 'what is the best type of pizza', 'body': 'b'} 
 r_success = requests.post(url, data=json.dumps(val))
 print(f'url: {url}')
 print(f"request responded: {r_success}.\nthe content of the response was {r_success.json()}")
