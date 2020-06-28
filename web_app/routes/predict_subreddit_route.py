@@ -19,10 +19,11 @@ def predict_subreddit():
     body_text = lines['body']
     
     # loading pickle files
-    encoder_path = os.path.join(os.path.dirname(__file__), '..', '..', 'pickle_files', 'encoder_small.pkl')
-    vect_path = os.path.join(os.path.dirname(__file__), '..', '..', 'pickle_files', 'vect_small.pkl')
-    model_path =os.path.join(os.path.dirname(__file__), '..', '..', 'pickle_files', 'RFC_model_small.pkl')
-
+    encoder_path = os.path.join(os.path.dirname(__file__), '..', '..', 'pickle_files', 'final_encoder.pkl')
+    vect_path = os.path.join(os.path.dirname(__file__), '..', '..', 'pickle_files', 'final_vec.pkl')
+    model_path =os.path.join(os.path.dirname(__file__), '..', '..', 'pickle_files', 'final_model_RFC.pkl')
+    print(encoder_path)
+   
     encoder = pickle.load(open(encoder_path, 'rb'))
     vect = pickle.load(open(vect_path, 'rb'))
     model = pickle.load(open(model_path, 'rb'))
